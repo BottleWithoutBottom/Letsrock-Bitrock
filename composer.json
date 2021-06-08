@@ -1,0 +1,22 @@
+{
+  "name": "Letsrock/Bitrock",
+  "authors": {
+      "name": "Leonid Titov",
+      "email": "shredder139@gmail.com",
+  },
+  "require": {
+    "php": ">=7.4.0",
+    "php-di/php-di": "^6.3",
+    "tightenco/collect": "^8.19",
+    "psr/log": "^1.1",
+    "monolog/monolog": "^2.2",
+    "vlucas/phpdotenv": "^5.3",
+    "illuminate/filesystem": "^8.38"
+  },
+  "require-dev": {
+    "symfony/var-dumper": "^5.2"
+  },
+  "autoload": {
+    "Bitrock\\": "src"
+  }
+}

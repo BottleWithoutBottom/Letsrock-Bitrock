@@ -1,0 +1,1 @@
+1) Все переменные из .env Доступны после запуска LetsCore::parseLogConfiguration($envPath)
