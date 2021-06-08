@@ -4,6 +4,7 @@ namespace Bitrock\Utils\FileGenerator\Generator;
 
 use Bitrock\Utils\FileGenerator\Prototypes\ClassPrototype;
 use Bitrock\Utils\FileGenerator\Stubs\ClassStub;
+use Bitrock\LetsCore;
 
 class BitrixModelGenerator extends ClassGenerator
 {
@@ -12,7 +13,7 @@ class BitrixModelGenerator extends ClassGenerator
         ClassStub $stub
     ) {
         parent::__construct($prototype, $stub);
-        $this->path = $this->path . '/local/app/MVC/Models/';
+        $this->path = LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_MODELS_PATH);
     }
 
     public function generate(): bool

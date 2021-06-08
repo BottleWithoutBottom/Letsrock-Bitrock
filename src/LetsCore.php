@@ -9,7 +9,9 @@ class LetsCore
 {
     public CONST VIEWS_PATH = 'VIEWS_PATH';
     public CONST SERVER_MODE = 'SERVER_MODE';
-    public CONST GENERATE_INFOBLOCK_MODELS = 'GENERATE_INFOBLOCK_MODELS';
+    public CONST GENERATE_INFOBLOCK_MODELS_MODE = 'GENERATE_INFOBLOCK_MODELS_MODE';
+    public CONST GENERATE_INFOBLOCK_MODELS_PATH = 'GENERATE_INFOBLOCK_MODELS_PATH';
+    public CONST GENERATE_INFOBLOCK_GENERATED_MODELS_PATH = 'GENERATE_INFOBLOCK_GENERATED_MODELS_PATH';
     public CONST RESIZES_STORAGE_PATH = 'RESIZES_STORAGE_PATH';
 
     /**  */
@@ -20,9 +22,10 @@ class LetsCore
 
     private static function executeInfoblockModelsGeneration()
     {
-        $generationFlag = static::getEnv(static::GENERATE_INFOBLOCK_MODELS);
+        $generationFlag = static::getEnv(static::GENERATE_INFOBLOCK_MODELS_MODE);
+        $generationPath = static::getEnv(static::GENERATE_INFOBLOCK_MODELS_PATH);
 
-        if (!empty($generationFlag)) {
+        if (!empty($generationFlag) && !empty($generationPath)) {
             return IblockHandler::executeInfoblockModelsGeneration();
         }
 

@@ -6,6 +6,7 @@ use Bitrock\Utils\FileGenerator\Prototypes\BitrixInfoblockPrototype;
 use Bitrock\Utils\FileGenerator\Prototypes\ClassPrototype;
 use Bitrock\Utils\FileGenerator\Stubs\BitrixInfoblockStub;
 use Bitrock\Utils\FileGenerator\Stubs\ClassStub;
+use Bitrock\LetsCore;
 
 class BitrixInfoblockGenerator extends BitrixModelGenerator
 {
@@ -30,8 +31,8 @@ class BitrixInfoblockGenerator extends BitrixModelGenerator
     ) {
         parent::__construct($prototype, $stub);
 
-        $this->path = $this->path . 'Infoblock/';
-        $this->generatedPath = $this->path . 'Generated/';
+        $this->generatedPath = $this->path
+            . LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_GENERATED_MODELS_PATH);
     }
 
     public function generate(): bool
