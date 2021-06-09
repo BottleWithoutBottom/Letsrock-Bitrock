@@ -49,17 +49,21 @@ class Container
 
         $class = $controllerArray[0];
         $method = $controllerArray[1];
-        $this->builder->addDefinitions(LetsCore::getEnv(LetsCore::DI_CONFIG_PATH));
-        $instance = $this->builder->build();
-
         try {
-            $reflectionClass = new \ReflectionClass($class);
-            $currentMethod = $reflectionClass->getMethod($method);
-            $currentMethodParams = $currentMethod->getParameters();
-            $params = $this->resolveArguments($currentMethodParams, $args);
-            return $instance->call([$class, $method], $params);
-        } catch(\ReflectionException $e) {
-            die($e->getMessage());
+            $this->builder->addDefinitions(LetsCore::getEnv(LetsCore::DI_CONFIG_PATH));
+            $instance = $this->builder->build();
+
+            try {
+                $reflectionClass = new \ReflectionClass($class);
+                $currentMethod = $reflectionClass->getMethod($method);
+                $currentMethodParams = $currentMethod->getParameters();
+                $params = $this->resolveArguments($currentMethodParams, $args);
+                return $instance->call([$class, $method], $params);
+            } catch(\ReflectionException $e) {
+                die($e->getMessage());
+            }
+        } catch(\Exception $e) {
+            die('DI_CONFIG_PATH file was not found in config');
         }
     }
 }
