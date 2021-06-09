@@ -49,7 +49,7 @@
 `
 use Bitrock\LetsCore;
 require($_SERVER['DOCUMENT_ROOT'] . '/local/vendor/autoload.php');
-LetsCore::parseLogConfiguration($_SERVER['DOCUMENT_ROOT'] . '/local/');
+LetsCore::parseConfiguration($_SERVER['DOCUMENT_ROOT'] . '/local/');
 `
 
     5.1 В данном файле нужно вызвать обработку виртуальных путей роутером (по умолчанию используется Bitrock\Router\FastRouter), но использовать можно любой, отнаследовавшись от Bitrock\Router\Router. Обработку можно запустить при помощи инициализации объекта выбранного роутера, и вызова у него метода handle():
