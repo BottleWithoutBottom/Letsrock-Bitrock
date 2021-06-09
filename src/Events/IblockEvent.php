@@ -5,7 +5,7 @@ use Bitrock\Utils\FileGenerator\Generator\BitrixInfoblockGenerator;
 use Bitrock\Utils\FileGenerator\Prototypes\BitrixInfoblockPrototype;
 use Bitrock\Utils\FileGenerator\Stubs\BitrixInfoblockStub;
 use Bitrock\Utils\FileGenerator\GenetratorCommand\BitrixInfoblockGeneratorCommand as BitInfoblockComm;
-use Bitrock\Models\Infoblock\Generated\GeneratedInfoblockModel;
+use Bitrock\Models\Infoblock\GeneratedInfoblockModel;
 use Bitrock\Models\Infoblock\InfoblockModel;
 
 class IblockEvent extends Event
