@@ -36,6 +36,29 @@
 
 5. В данном файле нужно вызвать обработку виртуальных путей роутером (по умолчанию используется Bitrock\Router\FastRouter), но использовать можно любой, отнаследовавшись от Bitrock\Router\Router. Обработку можно запустить при помощи инициализации объекта выбранного роутера, и вызова у него метода handle():
 `
-   $router = new Bitrcok\Router\FastRouter;
+   $router = Bitrcok\Router\FastRouter::getInstance();
+   // Роуты
    $router->handle();
 `
+   
+
+6. Добавление обрабатываемых роутов (для FastRoute):
+До запуска метода handle() нужно добавить роуты следующим образом:
+   
+`$router->addRoute(
+    [*Массив доступных методов('GET', 'POST')*], 
+    *урл роута(с учетом BOOTSTRAP_URL)*
+    [*Название класса контроллера*, *название метода, который будет вызван*]
+)`
+
+Пример:
+
+`
+$bootstrapPath = Bitrock\LetsCore::getEnv(LetsCore::BOOTSTRAP_URL);
+$router->addRoute(
+    ['GET'],
+    $bootstrapPath . 'test-route/'
+    [*Bitrock\Controllers\TestController*, 'testMethod']
+)`
+
+т.о., при попытке кинуть GET аякс запрос на путь /ajax-virtual/test-route/ будет вызван метод testMethod у класса TestController
