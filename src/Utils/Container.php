@@ -2,12 +2,10 @@
 
 namespace Bitrock\Utils;
 use \DI\ContainerBuilder;
+use Bitrock\LetsCore;
 
 class Container
 {
-    public CONST CURRENT_CLASS = 'CURRENT_CLASS';
-    public CONST CURRENT_METHOD = 'CURRENT_METHOD';
-
     protected $builder;
 
     public function __construct() {
@@ -51,7 +49,7 @@ class Container
 
         $class = $controllerArray[0];
         $method = $controllerArray[1];
-        $this->builder->addDefinitions(DI_CONFIG_PATH);
+        $this->builder->addDefinitions(LetsCore::getEnv(LetsCore::DI_CONFIG_PATH));
         $instance = $this->builder->build();
 
         try {
