@@ -68,3 +68,5 @@ $router->addRoute([
 ])`
 
 т.о., при попытке кинуть GET аякс запрос на путь /ajax-virtual/test-route/ будет вызван метод testMethod у класса TestController
+
+**Автоматическая генерация моделей для инфоблоков Bitrix**
