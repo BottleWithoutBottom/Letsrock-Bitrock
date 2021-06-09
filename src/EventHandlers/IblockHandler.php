@@ -12,26 +12,30 @@ class IblockHandler extends EventHandler
         $onUpdateFlag = LetsCore::getEnv(LetsCore::GENERATE_ON_UPDATE);
         $onDeleteFlag = LetsCore::getEnv(LetsCore::GENERATE_ON_DELETE);
 
-       if (
-           !empty($onAddFlag)
-           || !empty($onUpdateFlag)
-           || !empty($onDeleteFlag)
-       ) {
-           $eventManager = EventManager::getInstance();
-           if ($eventManager) {
-               if ($onAddFlag) {
-                   $eventManager->addEventHandler('iblock', 'OnAfterIBlockAdd' ,[IblockEvent::class, 'createModel']);
-               }
+        $classNamespace = LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_NAMESPACE);
 
-               if ($onUpdateFlag) {
-                   $eventManager->addEventHandler('iblock', 'OnAfterIBlockUpdate', [IblockEvent::class, 'createModel']);
-               }
+        if (!empty($classNamespace)) {
+            if (
+                !empty($onAddFlag)
+                || !empty($onUpdateFlag)
+                || !empty($onDeleteFlag)
+            ) {
+                $eventManager = EventManager::getInstance();
+                if ($eventManager) {
+                    if ($onAddFlag) {
+                        $eventManager->addEventHandler('iblock', 'OnAfterIBlockAdd' ,[IblockEvent::class, 'createModel']);
+                    }
 
-               if ($onDeleteFlag) {
-                   $eventManager->addEventHandler('iblock', 'OnIBlockDelete', [IblockEvent::class, 'deleteModel']);
-               }
-           }
-       }
+                    if ($onUpdateFlag) {
+                        $eventManager->addEventHandler('iblock', 'OnAfterIBlockUpdate', [IblockEvent::class, 'createModel']);
+                    }
+
+                    if ($onDeleteFlag) {
+                        $eventManager->addEventHandler('iblock', 'OnIBlockDelete', [IblockEvent::class, 'deleteModel']);
+                    }
+                }
+            }
+        }
 
         return true;
     }
