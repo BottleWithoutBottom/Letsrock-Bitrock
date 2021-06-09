@@ -5,7 +5,6 @@ use Bitrock\Utils\FileGenerator\Generator\BitrixInfoblockGenerator;
 use Bitrock\Utils\FileGenerator\Prototypes\BitrixInfoblockPrototype;
 use Bitrock\Utils\FileGenerator\Stubs\BitrixInfoblockStub;
 use Bitrock\Utils\FileGenerator\GenetratorCommand\BitrixInfoblockGeneratorCommand as BitInfoblockComm;
-use Bitrock\Models\Infoblock\GeneratedInfoblockModel;
 use Bitrock\Models\Infoblock\InfoblockModel;
 use Bitrock\LetsCore;
 
@@ -26,8 +25,8 @@ class IblockEvent extends Event
             );
 
             $namespace = LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_NAMESPACE);
+            $generatedNamespace = $namespace . '\\' . LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_GENERATED_MODELS_PATH);
             $infoblockModelReflection = new \ReflectionClass(new InfoblockModel());
-            $generatedInfoblockModelReflection = new \ReflectionClass(new GeneratedInfoblockModel());
             $command->execute([
                 BitInfoblockComm::IBLOCK_ID => $infoblockId,
                 BitInfoblockComm::SYMBOL_CODE => $symbolCode,
@@ -35,7 +34,7 @@ class IblockEvent extends Event
                 BitInfoblockComm::PARENT_CLASS_NAME => $infoblockModelReflection->getShortName(),
                 BitInfoblockComm::NAMESPACE => $namespace,
                 BitInfoblockComm::PARENT_NAMESPACE => $infoblockModelReflection->getName(),
-                BitInfoblockComm::GENERATED_NAMESPACE => $generatedInfoblockModelReflection->getNamespaceName(),
+                BitInfoblockComm::GENERATED_NAMESPACE => $generatedNamespace,
             ]);
         }
     }
