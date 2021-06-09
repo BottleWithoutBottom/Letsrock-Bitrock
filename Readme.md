@@ -7,7 +7,7 @@
 
 (Далее следует работа с ядром: Bitrock\LetsCore в файле init.php)
 
-4) Вызвать статический метод LetsCore::parseLogConfiguration($envPath), где $envPath - путь до файла .env, созданного ранее;
+4) Вызвать статический метод LetsCore::parseLogConfiguration($envPath), где $envPath - путь до папки с файлом .env, созданного ранее (ИМЕННО ПАПКИ, А НЕ ФАЙЛА);
 5) Вызвать метод LetsCore::execute(), чтобы ядро подключило сервисы, которые идут вместе с ним (автоматическая генерация моделей при создании и изменении инофблока, например).
 
 **Запуск роутера**
@@ -33,32 +33,38 @@
 `
 
 (Далее речь пойдет об абстрактном классе Bitrock\Router\Router)
+5. Подключить в BOOTSTRAP_PATH файле загрузку файлов из композера, и распарсить переменные окружения из .env:
+`
+use Bitrock\LetsCore;
+require($_SERVER['DOCUMENT_ROOT'] . '/local/vendor/autoload.php');
+LetsCore::parseLogConfiguration($_SERVER['DOCUMENT_ROOT'] . '/local/');
+`
 
-5. В данном файле нужно вызвать обработку виртуальных путей роутером (по умолчанию используется Bitrock\Router\FastRouter), но использовать можно любой, отнаследовавшись от Bitrock\Router\Router. Обработку можно запустить при помощи инициализации объекта выбранного роутера, и вызова у него метода handle():
-`
-   $router = Bitrcok\Router\FastRouter::getInstance();
-   // Роуты
-   $router->handle();
-`
+    5.1 В данном файле нужно вызвать обработку виртуальных путей роутером (по умолчанию используется Bitrock\Router\FastRouter), но использовать можно любой, отнаследовавшись от Bitrock\Router\Router. Обработку можно запустить при помощи инициализации объекта выбранного роутера, и вызова у него метода handle():
+    `
+       $router = Bitrcok\Router\FastRouter::getInstance();
+       // Роуты
+       $router->handle();
+    `
    
 
 6. Добавление обрабатываемых роутов (для FastRoute):
 До запуска метода handle() нужно добавить роуты следующим образом:
    
-`$router->addRoute(
-    [*Массив доступных методов('GET', 'POST')*], 
-    *урл роута(с учетом BOOTSTRAP_URL)*
-    [*Название класса контроллера*, *название метода, который будет вызван*]
-)`
+`$router->addRoute([
+    $router::METHOD => [*Массив доступных методов('GET', 'POST')*],
+    $router::URL => *урл роута(с учетом BOOTSTRAP_URL)*
+    $router::HANDLER => [*Название класса контроллера*, *название метода, который будет вызван*]
+])`
 
 Пример:
 
 `
 $bootstrapPath = Bitrock\LetsCore::getEnv(LetsCore::BOOTSTRAP_URL);
-$router->addRoute(
-    ['GET'],
-    $bootstrapPath . 'test-route/'
-    [*Bitrock\Controllers\TestController*, 'testMethod']
-)`
+$router->addRoute([
+    $router::METHOD => ['GET'],
+    $router::URL => $bootstrapPath . 'test-route/'
+    $router::HANDLER => [*Bitrock\Controllers\TestController*, 'testMethod']
+])`
 
 т.о., при попытке кинуть GET аякс запрос на путь /ajax-virtual/test-route/ будет вызван метод testMethod у класса TestController
