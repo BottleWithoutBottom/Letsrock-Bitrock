@@ -2,6 +2,9 @@
 
 namespace Bitrock\Utils\FileGenerator\GenetratorCommand;
 
+use Bitrock\Models\Infoblock\InfoblockModel;
+use Bitrock\LetsCore;
+
 class BitrixInfoblockGeneratorCommand extends AbstractGeneratorCommand
 {
     public CONST SYMBOL_CODE = 'symbolCode';
@@ -20,10 +23,10 @@ class BitrixInfoblockGeneratorCommand extends AbstractGeneratorCommand
         if ($this->initGeneratedPrototype($params)) {
             if ($this->generator->generate()) {
                 if (
-                    $this->generator->placeFile(
+                $this->generator->placeFile(
                     $this->generator->getGeneratedFullFilePath(),
                     $this->generator->getStubString()
-                    )
+                )
                 ) {
                     $params[static::GENERATED_PARENT_CLASS_NAME] = $this->prototype->getClass();
                     $params[static::GENERATED_PARENT_NAMESPACE] = $this->prototype->getNamespace() . '\\' . $this->prototype->getClass();
@@ -39,6 +42,41 @@ class BitrixInfoblockGeneratorCommand extends AbstractGeneratorCommand
 
             }
         }
+    }
+
+    public function deleteModelByInfoblockId($id)
+    {
+        if (empty($id)) return false;
+
+        $infoblock = InfoblockModel::getInfoblockById($id);
+
+        if (!empty($infoblock) && !empty($infoblock['CODE'])) {
+
+            $symbolCode = $infoblock['CODE'];
+
+            $generator = $this->generator;
+            $prototype = $this->generator->getPrototype();
+            $prototype->setSymbolCode($symbolCode);
+            if ($prototype->setClassNameBySymbolCode()) {
+                $fileName = $prototype->getClass();
+                $fileNameExt = $fileName . $generator->getExt();
+                $filePath = LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_MODELS_PATH)
+                    . $fileNameExt;
+
+                $generatedFilePath = LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_MODELS_PATH)
+                    . LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_GENERATED_MODELS_PATH)
+                    . $fileNameExt;
+
+                $files = $generator->files;
+
+                if ($files->exists($filePath) && $files->exists($generatedFilePath)) {
+                    $files->delete([$filePath, $generatedFilePath]);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private function initPrototype($params)

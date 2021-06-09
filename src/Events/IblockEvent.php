@@ -41,7 +41,13 @@ class IblockEvent extends Event
 
     public function deleteModel($ID)
     {
-        var_dump($ID);
+        $command = new BitInfoblockComm(
+            new BitrixInfoblockStub(),
+            new BitrixInfoblockPrototype(),
+            BitrixInfoblockGenerator::class
+        );
+
+        $command->deleteModelByInfoblockId($ID);
     }
 
     private static function getPropertiesSymbolCodes($infoblockId)

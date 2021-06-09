@@ -88,4 +88,9 @@ class AbstractGenerator implements GeneratorInterface
 
         return $this->getPath() . $this->getFileName() . $this->ext;
     }
+
+    public function getExt()
+    {
+        return $this->ext;
+    }
 }
