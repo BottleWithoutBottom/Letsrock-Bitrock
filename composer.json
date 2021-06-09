@@ -1,8 +1,8 @@
 {
   "name": "letsrock/bitrock",
   "authors": {
-      "name": "Leonid Titov",
-      "email": "shredder139@gmail.com"
+      "name": ["Leonid Titov"],
+      "email": ["shredder139@gmail.com"]
   },
   "require": {
     "php": ">=7.4.0",
