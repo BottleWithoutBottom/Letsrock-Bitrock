@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Router;
+namespace Bitrock\Router\FastRoute;
+use Bitrock\Router\Router;
 use FastRoute;
 use FastRoute\RouteCollector;
 use Bitrock\Utils\Container;
