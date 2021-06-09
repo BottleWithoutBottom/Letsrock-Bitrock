@@ -41,7 +41,7 @@ class LetsCore
      *
      * @return bool
      */
-    public static function parseLogConfiguration(string $envPath): bool
+    public static function parseConfiguration(string $envPath): bool
     {
         if (empty($envPath)) return false;
 
