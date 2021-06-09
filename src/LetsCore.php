@@ -11,6 +11,7 @@ class LetsCore
     public CONST SERVER_MODE = 'SERVER_MODE';
     public CONST GENERATE_INFOBLOCK_MODELS = 'GENERATE_INFOBLOCK_MODELS';
     public CONST RESIZES_STORAGE_PATH = 'RESIZES_STORAGE_PATH';
+    public CONST BOOTSTRAP_MODE = 'BOOTSTRAP_MODE';
 
     /**  */
     public static function execute()

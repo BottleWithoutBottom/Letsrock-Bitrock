@@ -1,6 +1,7 @@
 <?php
 
 namespace Bitrock\Router;
+use Bitrock\LetsCore;
 
 abstract class Router
 {
@@ -10,6 +11,8 @@ abstract class Router
 
     public static function getInstance()
     {
+        if (empty(LetsCore::getEnv(LetsCore::BOOTSTRAP_MODE))) return false;
+
         if (is_null(static::$instance)) {
             static::$instance = new static();
         }
