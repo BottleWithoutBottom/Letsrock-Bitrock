@@ -65,9 +65,10 @@ class BitrixInfoblockGeneratorCommand extends AbstractGeneratorCommand
 
                 $generatedFilePath = LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_MODELS_PATH)
                     . LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_GENERATED_MODELS_PATH)
+                    . '\\'
                     . $fileNameExt;
 
-                $files = $generator->files;
+                $files = $generator->getFiles();
 
                 if ($files->exists($filePath) && $files->exists($generatedFilePath)) {
                     $files->delete([$filePath, $generatedFilePath]);

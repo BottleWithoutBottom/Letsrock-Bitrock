@@ -93,4 +93,9 @@ class AbstractGenerator implements GeneratorInterface
     {
         return $this->ext;
     }
+
+    public function getFiles()
+    {
+        return $this->files;
+    }
 }
