@@ -2,7 +2,7 @@
   "name": "Letsrock/Bitrock",
   "authors": {
       "name": "Leonid Titov",
-      "email": "shredder139@gmail.com",
+      "email": "shredder139@gmail.com"
   },
   "require": {
     "php": ">=7.4.0",
