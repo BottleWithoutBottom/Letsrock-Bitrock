@@ -367,4 +367,16 @@ class InfoblockModel extends Model
         }
         return $properties;
     }
+
+    public static function getInfoblockById($infoblockId)
+    {
+        if (empty($infoblockId)) return false;
+
+        $infoblock = \CIBlock::GetList(
+            [],
+            ['ID' => $infoblockId]
+        );
+
+        return $infoblock->Fetch();
+    }
 }
