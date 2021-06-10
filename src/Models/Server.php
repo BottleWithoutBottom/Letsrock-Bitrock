@@ -6,13 +6,8 @@ use \CMain;
 \Bitrix\Main\Loader::includeModule('main');
 
 
-class Server extends Model
+class Server extends Singleton
 {
-    private static $instance;
-
-    private function __construct()
-    {}
-
     public function isProduction()
     {
         return LetsCore::getEnv(LetsCore::SERVER_MODE) == 'prod';
@@ -26,15 +21,6 @@ class Server extends Model
     public function isLocal()
     {
         return LetsCore::getEnv(LetsCore::SERVER_MODE) == 'local';
-    }
-
-    public static function getInstance()
-    {
-        if (is_null(self::$instance)) {
-            self::$instance = new self;
-        }
-
-        return self::$instance;
     }
 
     public function getFullServerName()
