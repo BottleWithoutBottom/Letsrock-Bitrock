@@ -32,12 +32,14 @@ class InfoblockModel extends Model
         $order = [self::ID_STRING => 'ASC'],
         $filter = [],
         $select = ['*'],
-        $sefMode = false
+        $sefMode = false,
+        $arGroupBy = false,
+        $arNavStartParams = false
     )
     {
         $filter = $this->setFullFilter($filter);
 
-        $query = CIBlockElement::GetList($order, $filter, false, false, $select);
+        $query = CIBlockElement::GetList($order, $filter, $arGroupBy, $arNavStartParams, $select);
         if ($sefMode) $query->SetUrlTemplates($this->getSefMode());
 
         if ($row = $query->GetNextElement()) {
@@ -53,13 +55,15 @@ class InfoblockModel extends Model
         $order = [self::ID_STRING => 'ASC'],
         $filter = [],
         $select = ['*'],
-        $sefMode = false
+        $sefMode = false,
+        $arGroupBy = false,
+        $arNavStartParams = false
     )
     {
         $filter = $this->setFullFilter($filter);
         $res = [];
 
-        $query = CIBlockElement::GetList($order, $filter, false, false, $select);
+        $query = CIBlockElement::GetList($order, $filter, $arGroupBy, $arNavStartParams, $select);
         if ($sefMode) $query->SetUrlTemplates($this->getSefMode());
         while ($row = $query->GetNextElement()) {
             $element = $row->getFields();
@@ -82,7 +86,9 @@ class InfoblockModel extends Model
         $propertyName,
         $order = [self::ID_STRING => 'ASC'],
         $filter = [],
-        $select = ['*']
+        $select = ['*'],
+        $arGroupBy = false,
+        $arNavStartParams = false
     )
     {
         if (
@@ -98,7 +104,7 @@ class InfoblockModel extends Model
         $ids = [self::ID_STRING => $value];
         $preFilter = array_merge($ids, $filter);
 
-        $row = CIBlockElement::GetList($order, $preFilter, false, false, $select);
+        $row = CIBlockElement::GetList($order, $preFilter, $arGroupBy, $arNavStartParams, $select);
 
         if (!empty($this->getSefMode())) $row->SetUrlTemplates($this->getSefMode());
 
@@ -123,7 +129,9 @@ class InfoblockModel extends Model
         $propertyName,
         $order = [self::ID_STRING => 'ASC'],
         $filter = [],
-        $select = ['*']
+        $select = ['*'],
+        $arGroupBy = false,
+        $arNavStartParams = false
     )
     {
         if (empty($items || empty($propertyName))) return false;
@@ -152,7 +160,9 @@ class InfoblockModel extends Model
                 $propertyName,
                 $order,
                 $filter,
-                $select
+                $select,
+                $arGroupBy,
+                $arNavStartParams
             );
         }
 
@@ -332,14 +342,16 @@ class InfoblockModel extends Model
     /**
      * @return mixed
      */
-    public function getSefMode() {
+    public function getSefMode()
+    {
         return $this->sefMode;
     }
 
     /**
      * @param mixed $sefMode
      */
-    public function setSefMode($sefMode): void {
+    public function setSefMode($sefMode): void
+    {
         $this->sefMode = $sefMode;
     }
 
