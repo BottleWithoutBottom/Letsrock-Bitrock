@@ -2,8 +2,6 @@
 
 namespace Bitrock\Models;
 use Bitrock\LetsCore;
-use \CMain;
-\Bitrix\Main\Loader::includeModule('main');
 
 
 class Server extends Singleton
@@ -25,7 +23,11 @@ class Server extends Singleton
 
     public function getFullServerName()
     {
-        return CMain::IsHTTPS() ? "https://" : "http://" . $_SERVER['SERVER_NAME'];
+        return $this->isHttps() ? "https://" : "http://" . $_SERVER['SERVER_NAME'];
+    }
 
+    public function isHttps()
+    {
+        return $_SERVER['HTTPS'];
     }
 }
