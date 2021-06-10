@@ -11,10 +11,18 @@ class Singleton
 
     public static function getInstance()
     {
+        if (!static::preHook()) return false;
+
         if (is_null(self::$instance)) {
             self::$instance = new self;
         }
 
         return self::$instance;
+    }
+
+    /** method to be inherited */
+    public static function preHook()
+    {
+        return true;
     }
 }
