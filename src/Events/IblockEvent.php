@@ -25,7 +25,7 @@ class IblockEvent extends Event
             );
 
             $namespace = LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_NAMESPACE);
-            $generatedNamespace = $namespace . '\\' . LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_GENERATED_MODELS_DIR_NAME);
+            $generatedNamespace = $namespace . LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_GENERATED_MODELS_DIR_NAME);
             $infoblockModelReflection = new \ReflectionClass(new InfoblockModel());
             $command->execute([
                 BitInfoblockComm::IBLOCK_ID => $infoblockId,
