@@ -16,12 +16,12 @@ class View extends Singleton
 
         if (!empty($params)) extract($params);
         ob_start();
-        require(LetsCore::getEnv(LetsCore::VIEWS_PATH) . $viewName);
+        require(LetsCore::getEnv(LetsCore::VIEWS_DIR) . $viewName);
         return ob_get_clean();
     }
 
     public static function preHook()
     {
-        return !empty(LetsCore::getEnv(LetsCore::VIEWS_PATH));
+        return !empty(LetsCore::getEnv(LetsCore::VIEWS_PATH)) && is_dir(LetsCore::getEnv(LetsCore::VIEWS_PATH));
     }
 }
