@@ -3,6 +3,7 @@
 namespace Bitrock;
 use Dotenv\Dotenv;
 use Bitrock\EventHandlers\IblockHandler;
+use Illuminate\Filesystem\Filesystem;
 
 /** Класс для конфигурации Bitrock */
 class LetsCore
@@ -26,10 +27,14 @@ class LetsCore
 
     public CONST DI_CONFIG_PATH = 'DI_CONFIG_PATH';
 
+    public CONST EVENT_HANDLERS_PATH = 'EVENT_HANDLERS_PATH';
+    public CONST EVENT_HANDLERS_MODE = 'EVENT_HANDLERS_MODE';
+
     /**  */
     public static function execute()
     {
         static::executeInfoblockModelsGeneration();
+        static::executeEventHandlers();
     }
 
     private static function executeInfoblockModelsGeneration()
@@ -39,6 +44,24 @@ class LetsCore
 
         if (!empty($generationFlag) && !empty($generationPath)) {
             return IblockHandler::executeInfoblockModelsGeneration();
+        }
+
+        return false;
+    }
+
+    private static function executeEventHandlers()
+    {
+        $executeMode =  static::getEnv(static::EVENT_HANDLERS_MODE);
+
+        if ($executeMode) {
+            $handlersPath = static::getEnv(static::EVENT_HANDLERS_PATH);
+
+            $fileSystem = new Filesystem();
+
+            if ($fileSystem->exists($handlersPath)) {
+                require $handlersPath;
+                return true;
+            }
         }
 
         return false;
