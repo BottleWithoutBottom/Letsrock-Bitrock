@@ -53,6 +53,13 @@ abstract class HLModel extends Model
         )->fetchAll();
     }
 
+    public function update($id, $data)
+    {
+        if (empty($id) || empty($data) || !is_array($data)) return false;
+
+        return $this->getHlEntity()::update($id, $data);
+    }
+
     private function getEntity()
     {
         \CModule::IncludeModule('highloadblock');
