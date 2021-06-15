@@ -39,6 +39,6 @@ abstract class Controller
         $jsonResponse->setData($data);
         $jsonResponse->setMessage($message);
         $jsonResponse->setStatus($status);
-        $this->refreshJSONResponse();
+        $jsonResponse->send();
     }
 }
