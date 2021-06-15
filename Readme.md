@@ -115,3 +115,41 @@ $logger = Logger::getInstance();
 $logger->setLogPath(*Путь до лог-файла*);
 $logger->info(`User with login ${$login} successfully logged in`);
 ```
+
+**Resizer**
+Класс ресайзер используется для того, чтобы сократить количество кода при ресайзе картинок.
+
+Достигается это посредством того, что настройки каждого ресайза помещаются в отдельный файл, и не загромождают код, в котором используется ресайз.
+
+Использование:
+
+1) Необходимо в .env указать путь до файла, который возвращает массив с настройками ресайзов (RESIZES_STORAGE_PATH);
+   
+2) Создать этот файл с подобным содержимым:
+
+```
+#!php
+return [
+    'FIRST_RESIZE' => [
+        'WIDTH' => 350,
+        'HEIGHT' => 350,
+        'BX_RESIZE' => BX_RESIZE_IMAGE_PROPORTIONAL
+    ]
+]
+```
+
+Здесь `'FIRST_RESIZE' - ключ, по которому, в дальнейшем, можно использовать ресайз, а внутри него настройки конкретного ресайза`;
+
+3) Использование ресайзера в коде:
+
+```
+#!php
+use Bitrock\Utils\Resizer;
+
+$resizer = Resizer::getInstance();
+
+//$resizedPicture = $resizer->getResizeImageArray(*массив файла для ресайза*, *Ключ ресайза из конфига*);
+$resizedPicture = $resizer->getResizeImageArray($resizeArray, 'FIRST_RESIZE');
+```
+
+Также, доступен метод `getResizeImageArrayById($id, *Ключ ресайза из конфига*)`, который позволяет получить ресайз картинки по ID файла, а не массива с данными файла
