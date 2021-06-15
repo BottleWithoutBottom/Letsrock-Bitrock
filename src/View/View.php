@@ -22,6 +22,6 @@ class View extends Singleton
 
     public static function preHook()
     {
-        return !empty(LetsCore::getEnv(LetsCore::VIEWS_PATH)) && is_dir(LetsCore::getEnv(LetsCore::VIEWS_PATH));
+        return !empty(LetsCore::getEnv(LetsCore::VIEWS_DIR)) && is_dir(LetsCore::getEnv(LetsCore::VIEWS_DIR));
     }
 }
