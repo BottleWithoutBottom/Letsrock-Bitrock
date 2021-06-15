@@ -65,7 +65,7 @@ class BitrixInfoblockGeneratorCommand extends AbstractGeneratorCommand
 
                 $generatedFilePath = LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_MODELS_PATH)
                     . LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_GENERATED_MODELS_DIR_NAME)
-                    . '\\'
+                    . DIRECTORY_SEPARATOR
                     . $fileNameExt;
 
                 $files = $generator->getFiles();

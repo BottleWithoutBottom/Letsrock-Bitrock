@@ -98,7 +98,7 @@ class LetsCore
 
     public static function getConfigDir()
     {
-        return static::getRootDir() . '\\' . 'config\\';
+        return static::getRootDir() . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
     }
 
     public static function getConfigFile($fileName)
