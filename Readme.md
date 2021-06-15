@@ -46,39 +46,72 @@
 
 (Далее речь пойдет об абстрактном классе Bitrock\Router\Router)
 5. Подключить в BOOTSTRAP_PATH файле загрузку файлов из композера, и распарсить переменные окружения из .env:
-`
+
+```
+#!php
 use Bitrock\LetsCore;
 require($_SERVER['DOCUMENT_ROOT'] . '/local/vendor/autoload.php');
 LetsCore::parseConfiguration($_SERVER['DOCUMENT_ROOT'] . '/local/');
-`
+```
 
-    5.1 В данном файле нужно вызвать обработку виртуальных путей роутером (по умолчанию используется Bitrock\Router\FastRouter), но использовать можно любой, отнаследовавшись от Bitrock\Router\Router. Обработку можно запустить при помощи инициализации объекта выбранного роутера, и вызова у него метода handle():
-    `
-       $router = Bitrcok\Router\FastRouter::getInstance();
-       // Роуты
-       $router->handle();
-    `
-   
+5.1 В данном файле нужно вызвать обработку виртуальных путей роутером (по умолчанию используется Bitrock\Router\FastRouter), но использовать можно любой, отнаследовавшись от Bitrock\Router\Router. Обработку можно запустить при помощи инициализации объекта выбранного роутера, и вызова у него метода handle():
+
+```
+#!php
+   $router = Bitrcok\Router\FastRouter::getInstance();
+   // Роуты
+   $router->handle();
+```
 
 6. Добавление обрабатываемых роутов (для FastRoute):
 До запуска метода handle() нужно добавить роуты следующим образом:
-   
-`$router->addRoute([
+
+```
+#!php
+$router->addRoute([
     $router::METHOD => [*Массив доступных методов('GET', 'POST')*],
     $router::URL => *урл роута(с учетом BOOTSTRAP_URL)*
     $router::HANDLER => [*Название класса контроллера*, *название метода, который будет вызван*]
-])`
+])
+```
 
 Пример:
 
-`
+```
+#!php
 $bootstrapPath = Bitrock\LetsCore::getEnv(LetsCore::BOOTSTRAP_URL);
 $router->addRoute([
     $router::METHOD => ['GET'],
     $router::URL => $bootstrapPath . 'test-route/'
     $router::HANDLER => [*Bitrock\Controllers\TestController*, 'testMethod']
-])`
+])
+```
 
-т.о., при попытке кинуть GET аякс запрос на путь /ajax-virtual/test-route/ будет вызван метод testMethod у класса TestController
+т.о., при попытке кинуть GET аякс запрос на путь `/ajax-virtual/test-route/` будет вызван метод testMethod у класса `TestController`
 
 **Автоматическая генерация моделей для инфоблоков Bitrix**
+
+**Logger**
+
+Логгер в пакете реализует psr и использует Monolog под капотом.
+
+Использование:
+
+```
+#!php
+use Bitrock\Utils\Logger\Logger;
+$logger = Logger::getInstance();
+$logger->info(`User with login ${$login} successfully logged in`);
+```
+
+По умолчанию, логи будут записываться в файл, указанный в LOG_PATH в .env файле.
+
+Но есть возможность изменить файл для записи при помощи метода `setLogPath()`:
+
+```
+#!php
+use Bitrock\Utils\Logger\Logger;
+$logger = Logger::getInstance();
+$logger->setLogPath(*Путь до лог-файла*);
+$logger->info(`User with login ${$login} successfully logged in`);
+```
