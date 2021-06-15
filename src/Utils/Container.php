@@ -3,6 +3,7 @@
 namespace Bitrock\Utils;
 use \DI\ContainerBuilder;
 use Bitrock\LetsCore;
+use Bitrock\Models\Singleton;
 
 class Container
 {
@@ -29,7 +30,11 @@ class Container
             ) {
                 try {
                     $paramNamespace = $methodParam->getType()->getName();
-                    $containerParams[] = new $paramNamespace();
+                    if ($this->checkSingletonByClassName($paramNamespace)) {
+                        $containerParams[] = $paramNamespace::getInstance();
+                    } else {
+                        $containerParams[] = new $paramNamespace();
+                    }
                 } catch (\ReflectionException $e) {
                     die($e->getMessage());
                 }
@@ -65,6 +70,14 @@ class Container
         } catch(\Exception $e) {
             die('DI_CONFIG_PATH file was not found in config');
         }
+    }
+
+    private function checkSingletonByClassName($className)
+    {
+        if (empty($className)) return false;
+
+        $reflection = new \ReflectionClass($className);
+        return $reflection->isSubclassOf(Singleton::class);
     }
 
     private function getConfig()
