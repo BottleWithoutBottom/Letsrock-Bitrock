@@ -1,12 +1,17 @@
 <?
-
 namespace Bitrock\Models\Vendor;
 
-class JSONModel extends Response
+class JSONResponse extends Response
 {
     private $status = false;
     private $data = [];
     private $message = '';
+
+    public function send()
+    {
+        parent::send();
+        die($this->getAsString());
+    }
 
     /**
      * @return mixed
