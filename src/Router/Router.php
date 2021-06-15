@@ -2,23 +2,15 @@
 
 namespace Bitrock\Router;
 use Bitrock\LetsCore;
+use Bitrock\Models\Singleton;
 
-abstract class Router
+abstract class Router extends Singleton
 {
-    protected static $instance;
-
-    private function __construct() {}
-
-    public static function getInstance()
-    {
-        if (empty(LetsCore::getEnv(LetsCore::BOOTSTRAP_MODE))) return false;
-
-        if (is_null(static::$instance)) {
-            static::$instance = new static();
-        }
-
-        return static::$instance;
-    }
 
     abstract public function handle();
+
+    public static function preHook()
+    {
+        return !empty(LetsCore::getEnv(LetsCore::BOOTSTRAP_MODE));
+    }
 }
