@@ -4,7 +4,7 @@ namespace Bitrock\Models;
 
 class Singleton
 {
-    private static $instance;
+    private static $instances = [];
 
     private function __construct(){}
     private function __clone(){}
@@ -13,11 +13,12 @@ class Singleton
     {
         if (!static::preHook()) return false;
 
-        if (is_null(static::$instance)) {
-            static::$instance = new static;
+        $className = static::class;
+        if (!isset(static::$instances[$className])) {
+            static::$instances[$className] = new static;
         }
 
-        return static::$instance;
+        return static::$instances[$className];
     }
 
     /** method to be inherited */
