@@ -2,5 +2,5 @@
 use Bitrock\Utils\Logger\Logger;
 
 return [
-    Logger::class => Logger::getInstance(),
+    Logger::class => Logger::class,
 ];
