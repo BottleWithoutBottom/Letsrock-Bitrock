@@ -30,6 +30,10 @@ class LetsCore
     public CONST EVENT_HANDLERS_PATH = 'EVENT_HANDLERS_PATH';
     public CONST EVENT_HANDLERS_MODE = 'EVENT_HANDLERS_MODE';
 
+    public CONST LOG_NAME = 'LOG_NAME';
+    public CONST LOG_PATH = 'LOG_PATH';
+    public CONST LOG_LEVEL = 'LOG_LEVEL';
+
     /**  */
     public static function execute()
     {
