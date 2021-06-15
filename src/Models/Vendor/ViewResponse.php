@@ -24,7 +24,10 @@ class ViewResponse extends Response
     {
         if (empty($viewName)) return false;
 
-        echo $this->view->render($viewName, $params);
+        if (!empty($this->view)) {
+            echo $this->view->render($viewName, $params);
+        }
+
         die();
     }
 
