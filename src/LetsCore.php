@@ -34,6 +34,8 @@ class LetsCore
     public CONST LOG_PATH = 'LOG_PATH';
     public CONST LOG_LEVEL = 'LOG_LEVEL';
 
+    public CONST DEFAULT_CONFIG_DIR = 'config';
+
     /**  */
     public static function execute()
     {
@@ -98,7 +100,7 @@ class LetsCore
 
     public static function getConfigDir()
     {
-        return static::getRootDir() . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
+        return static::getRootDir() . DIRECTORY_SEPARATOR . static::DEFAULT_CONFIG_DIR . DIRECTORY_SEPARATOR;
     }
 
     public static function getConfigFile($fileName)
