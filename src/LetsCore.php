@@ -90,4 +90,21 @@ class LetsCore
     {
         return $_ENV[$name];
     }
+
+    public static function getRootDir()
+    {
+        return __DIR__;
+    }
+
+    public static function getConfigDir()
+    {
+        return static::getRootDir() . '\\' . 'config\\';
+    }
+
+    public static function getConfigFile($fileName)
+    {
+        if (empty($fileName)) return false;
+
+        return static::getConfigDir() . $fileName;
+    }
 }

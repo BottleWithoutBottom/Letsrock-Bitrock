@@ -50,7 +50,7 @@ class Container
         $class = $controllerArray[0];
         $method = $controllerArray[1];
         try {
-            $this->builder->addDefinitions(LetsCore::getEnv(LetsCore::DI_CONFIG_PATH));
+            $this->builder->addDefinitions($this->getConfig());
             $instance = $this->builder->build();
 
             try {
@@ -65,5 +65,27 @@ class Container
         } catch(\Exception $e) {
             die('DI_CONFIG_PATH file was not found in config');
         }
+    }
+
+    private function getConfig()
+    {
+        $defaultConfigArrayPath = LetsCore::getConfigFile('DI.php');
+        $customConfigArrayPath = LetsCore::getEnv(LetsCore::DI_CONFIG_PATH);
+        $configArray = [];
+
+        if (file_exists($defaultConfigArrayPath)) {
+            $configArray = require($defaultConfigArrayPath);
+        }
+
+        if (file_exists($customConfigArrayPath)) {
+            $customConfigArray = require($customConfigArrayPath);
+
+            if (is_array($customConfigArray)) {
+                $configArray = array_merge($configArray, $customConfigArray);
+            }
+        }
+
+        return $configArray;
+
     }
 }
