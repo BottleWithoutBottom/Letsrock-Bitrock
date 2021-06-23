@@ -4,9 +4,16 @@ namespace Bitrock\Controllers;
 use Bitrock\Models\Vendor\JSONResponse;
 use Bitrock\Models\Vendor\ViewResponse;
 use Bitrock\Models\Vendor\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 abstract class Controller
 {
+    protected $request;
+    public function __construct()
+    {
+        $this->request = Request::createFromGlobals();
+    }
+
     /**
      * @param string $viewName - название view
      * @param array $params - массив значений, которые будут преобразованы в переменные
