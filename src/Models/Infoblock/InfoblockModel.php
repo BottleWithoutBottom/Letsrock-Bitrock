@@ -1,10 +1,11 @@
 <?php
 
 namespace Bitrock\Models\Infoblock;
-use Bitrock\Models\Highload\HLModel;
+use Birtock\Models\Highload\HLModel;
 use Bitrock\Models\Model;
 use Bitrock\Models\BitrixModelTrait;
 use \Bitrix\Main\Loader;
+use Bitrock\Utils\Logger\Logger;
 use \CIBlockElement;
 
 Loader::includeModule('iblock');
@@ -22,6 +23,7 @@ class InfoblockModel extends Model
 
     protected $infoblockId;
     protected $symbolCode;
+    protected $getAllPropsMode = true;
 
     /** Если есть необходимость в создание ЧПУ урлов у инфоблока,
      * у модели нужно вызвать метод setSefMode('/section/#SECTION_URL#'...)
@@ -32,7 +34,7 @@ class InfoblockModel extends Model
         $order = [self::ID_STRING => 'ASC'],
         $filter = [],
         $select = ['*'],
-        $sefMode = false,
+        bool $sefMode = false,
         $arGroupBy = false,
         $arNavStartParams = false
     )
@@ -44,7 +46,9 @@ class InfoblockModel extends Model
 
         if ($row = $query->GetNextElement()) {
             $elem = $row->getFields();
-            $elem[static::PROPERTIES_STRING] = $row->getProperties();
+            $elem[static::PROPERTIES_STRING] = $this->getAllPropsMode
+            ? $row->getProperties()
+            : $this->getPropertiesInItem($elem);
             return $elem;
         }
 
@@ -55,7 +59,7 @@ class InfoblockModel extends Model
         $order = [self::ID_STRING => 'ASC'],
         $filter = [],
         $select = ['*'],
-        $sefMode = false,
+        bool $sefMode = false,
         $arGroupBy = false,
         $arNavStartParams = false
     )
@@ -67,7 +71,9 @@ class InfoblockModel extends Model
         if ($sefMode) $query->SetUrlTemplates($this->getSefMode());
         while ($row = $query->GetNextElement()) {
             $element = $row->getFields();
-            $element[static::PROPERTIES_STRING] = $row->getProperties();
+            $element[static::PROPERTIES_STRING] = $this->getAllPropsMode
+                ? $row->getProperties()
+                : $this->getPropertiesInItem($element);
             $res[] = $element;
         }
 
@@ -81,16 +87,16 @@ class InfoblockModel extends Model
      * @param string $propertyType
      * @return array
      */
-    public function fetchElementsProperty(
+    public function fetchLinkedProperties(
         $properties,
         $propertyName,
         $order = [self::ID_STRING => 'ASC'],
         $filter = [],
         $select = ['*'],
+        bool $sefMode = false,
         $arGroupBy = false,
         $arNavStartParams = false
-    )
-    {
+    ) {
         if (
             empty($properties)
             || empty($propertyName)
@@ -104,32 +110,26 @@ class InfoblockModel extends Model
         $ids = [self::ID_STRING => $value];
         $preFilter = array_merge($ids, $filter);
 
-        $row = CIBlockElement::GetList($order, $preFilter, $arGroupBy, $arNavStartParams, $select);
-
-        if (!empty($this->getSefMode())) $row->SetUrlTemplates($this->getSefMode());
-
-        $res = [];
-        while ($element = $row->GetNext()) {
-            $properties = $this->getPropertiesInItem($element);
-
-            if (!empty($properties)) {
-                $element[static::PROPERTIES_STRING] = $properties;
-            }
-            $res[] = $element;
-        }
-
-        return $res;
+        return $this->fetchAll(
+            $order,
+            $preFilter,
+            $select,
+            $sefMode,
+            $arGroupBy,
+            $arNavStartParams
+        );
     }
 
     /** Метод достает свойства типа
      * "привязка к элементу сразу для нескольких элементов CIBlockResult"
      */
-    public function fetchAllElementsProperty(
-        $items,
-        $propertyName,
-        $order = [self::ID_STRING => 'ASC'],
-        $filter = [],
-        $select = ['*'],
+    public function fetchAllLinkedProperties(
+        array $items,
+        string $propertyName,
+        array $order = [self::ID_STRING => 'ASC'],
+        array $filter = [],
+        array $select = ['*'],
+        bool $sefMode = false,
         $arGroupBy = false,
         $arNavStartParams = false
     )
@@ -152,15 +152,13 @@ class InfoblockModel extends Model
         }
 
         if (!empty($propertyIds)) {
-
-            return $this->fetchElementsProperty(
-                [
-                    $propertyName => [static::VALUE => $propertyIds]
-                ],
+            return $this->fetchLinkedProperties(
+                [$propertyName => [static::VALUE => $propertyIds]],
                 $propertyName,
                 $order,
                 $filter,
                 $select,
+                $sefMode,
                 $arGroupBy,
                 $arNavStartParams
             );
@@ -178,10 +176,10 @@ class InfoblockModel extends Model
      * @param array $select
      * @return array|bool
      */
-    public function fetchALLHLElementsProperty(
+    public function fetchAllLinkedHLProperties(
         $items,
         $propertyName,
-        string $hlmodelName,
+        HLModel $hlModel,
         $order = [self::ID_STRING => 'ASC'],
         $filter = [],
         $select = ['*']
@@ -192,13 +190,6 @@ class InfoblockModel extends Model
             || empty($propertyName)
             || empty($hlmodelName)
         ) return false;
-
-        try {
-            $hlModel = new $hlmodelName();
-        } catch(\ReflectionException $e) {
-            $flog = fopen($_SERVER['DOCUMENT_ROOT'] . "/local/logs/flog.log", "a");fwrite($flog, print_r($e->getMessage(), true));fclose($flog);  // todo remove
-            return false;
-        }
 
         $propertyIds = [];
 
@@ -216,11 +207,8 @@ class InfoblockModel extends Model
         }
 
         if (!empty($propertyIds)) {
-
-            return $this->fetchHLElementsProperty(
-                [
-                    $propertyName => [static::VALUE => $propertyIds]
-                ],
+            return $this->fetchLinkedHLProperties(
+                [$propertyName => [static::VALUE => $propertyIds]],
                 $propertyName,
                 $hlModel,
                 $order,
@@ -232,7 +220,7 @@ class InfoblockModel extends Model
         return false;
     }
 
-    public function fetchHLElementsProperty(
+    public function fetchLinkedHLProperties(
         $properties,
         $propertyName,
         HLModel $hlModel,
@@ -307,6 +295,11 @@ class InfoblockModel extends Model
 
         $this->infoblockId = (int)$id;
         return true;
+    }
+
+    public function setAllPropsMode($bool)
+    {
+        $this->getAllPropsMode = $bool;
     }
 
     private function getPrefilter()
