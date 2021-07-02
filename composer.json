@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "php": ">=7.4.0",
+    "php": ">=7.3.0",
     "php-di/php-di": "^6.3",
     "tightenco/collect": "^8.19",
     "psr/log": "^1.1",
