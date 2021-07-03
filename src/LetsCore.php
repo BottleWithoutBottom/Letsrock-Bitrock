@@ -1,8 +1,8 @@
 <?php
 
 namespace Bitrock;
-use Dotenv\Dotenv;
 use Bitrock\EventHandlers\IblockHandler;
+use Bitrock\LetsEnv;
 use Illuminate\Filesystem\Filesystem;
 
 /** Класс для конфигурации Bitrock */
@@ -80,17 +80,13 @@ class LetsCore
      */
     public static function parseConfiguration(string $envPath): bool
     {
-        if (empty($envPath)) return false;
-
-        $config = Dotenv::createImmutable($envPath);
-        $config->load();
-
-        return true;
+        return LetsEnv::getInstance()->parseConfiguration($envPath);
     }
 
     public static function getEnv($name)
     {
-        return $_ENV[$name];
+        return LetsEnv::getInstance()->getEnv($name);
+
     }
 
     public static function getRootDir()

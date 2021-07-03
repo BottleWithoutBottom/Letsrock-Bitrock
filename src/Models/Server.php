@@ -2,6 +2,7 @@
 
 namespace Bitrock\Models;
 use Bitrock\LetsCore;
+use Bitrock\Models\Singleton;
 
 
 class Server extends Singleton

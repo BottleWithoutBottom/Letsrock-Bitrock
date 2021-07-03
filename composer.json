@@ -10,6 +10,8 @@
   ],
   "require": {
     "php": ">=7.3.0",
+    "letsrock/letsenv": "1.*",
+    "letsrock/singleton": "1.*",
     "php-di/php-di": "^6.3",
     "tightenco/collect": "^8.19",
     "psr/log": "^1.1",
