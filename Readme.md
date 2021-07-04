@@ -60,6 +60,10 @@ LetsCore::parseConfiguration($_SERVER['DOCUMENT_ROOT'] . '/local/');
 #!php
    $router = Bitrcok\Router\FastRouter::getInstance();
    // Роуты
+   ...
+   // подключаем массив с массив с классами для автолода для DI-контейнера:
+   $definitions = require(массив с классами для автолода);
+   $router->setContainerDefinitions($definitions);
    $router->handle();
 ```
 
