@@ -29,6 +29,15 @@ class AbstractGenerator implements GeneratorInterface
         return $this->files->put($path, $content);
     }
 
+    public function placeFileIfNotExists(string $path, $content): bool
+    {
+        if (!$this->files->exists($path)) {
+            return $this->placeFile($path, $content);
+        }
+
+        return false;
+    }
+
     public function setFileName(string $fileName): bool
     {
         if (empty($fileName)) return false;
