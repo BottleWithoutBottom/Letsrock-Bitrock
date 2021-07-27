@@ -8,7 +8,6 @@ use Illuminate\Filesystem\Filesystem;
 /** Класс для конфигурации Bitrock */
 class LetsCore
 {
-    public CONST VIEWS_DIR = 'VIEWS_DIR';
     public CONST SERVER_MODE = 'SERVER_MODE';
 
     public CONST GENERATE_INFOBLOCK_MODELS_MODE = 'GENERATE_INFOBLOCK_MODELS_MODE';
