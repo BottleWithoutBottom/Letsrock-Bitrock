@@ -1,6 +1,6 @@
 <?php
-use Bitrock\Utils\Logger\Logger;
+use Bitrock\Logger;
 
 return [
-    Logger::class => Logger::class,
+    Logger::class => \DI\create(Logger::class),
 ];

@@ -2,11 +2,14 @@
 
 namespace Bitrock;
 use Bitrock\EventHandlers\IblockHandler;
-use Bitrock\LetsEnv;
+use Bitrock\Models\Singleton;
+use DI\Container;
+use DI\ContainerBuilder;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /** Класс для конфигурации Bitrock */
-class LetsCore
+class LetsCore extends Singleton
 {
     public CONST SERVER_MODE = 'SERVER_MODE';
 
@@ -35,11 +38,48 @@ class LetsCore
 
     public CONST DEFAULT_CONFIG_DIR = 'config';
 
-    /**  */
-    public static function execute()
+    /** @var Container */
+    protected $container;
+
+    /** @return self  */
+    public static function getInstance()
+    {
+        return parent::getInstance();
+    }
+
+    public function execute()
     {
         static::executeInfoblockModelsGeneration();
         static::executeEventHandlers();
+    }
+
+    public function executeContainer()
+    {
+        try {
+            $defaultConfigPath = static::getConfigFile('DI.php');
+            $additionalConfigPath = static::getEnv(static::DI_CONFIG_PATH);
+            $defaultConfigArray = require($defaultConfigPath);
+            $additionalConfigArray = [];
+
+            if (!empty($defaultConfigPath) && file_exists($additionalConfigPath)) {
+                $additionalConfigArray = require($additionalConfigPath);
+            }
+            $definitions = is_array($additionalConfigArray)
+                ? array_merge($defaultConfigArray, $additionalConfigArray)
+                : $defaultConfigPath;
+
+            $builder = new ContainerBuilder();
+            $builder->addDefinitions($definitions);
+            $this->container = $builder->build();
+        } catch (FileNotFoundException $e) {
+            throw new FileNotFoundException('Cannot open DI default config file.');
+        }
+    }
+
+    /** @return Container  */
+    public function getContainer()
+    {
+        return $this->container;
     }
 
     private static function executeInfoblockModelsGeneration()
