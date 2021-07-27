@@ -384,4 +384,9 @@ class InfoblockModel extends Model
 
         return $infoblock->Fetch();
     }
+
+    public static function getActiveFilter()
+    {
+        return ['ACTIVE' => 'Y'];
+    }
 }

@@ -47,4 +47,23 @@ class Helper extends Model
 
         return $embeded;
     }
+
+    public static function strip(string $string): string
+    {
+        return htmlspecialchars(strip_tags($string));
+    }
+
+    public static function stripArray(array $array, $exceptionKeys = []): array
+    {
+        $res = [];
+        foreach ($array as $key => $value) {
+            if (gettype($value) == 'array') {
+                $res[$key] = static::stripArray($value, $exceptionKeys);
+            } else {
+                $res[$key] = !in_array($key, $exceptionKeys) ? static::strip($value) : $value;
+            }
+        }
+
+        return $res;
+    }
 }

@@ -29,10 +29,12 @@ class BitrixInfoblockGeneratorCommand extends AbstractGeneratorCommand
                 )
                 ) {
                     $params[static::GENERATED_PARENT_CLASS_NAME] = $this->prototype->getClass();
-                    $params[static::GENERATED_PARENT_NAMESPACE] = $this->prototype->getNamespace() . '\\' . $this->prototype->getClass();
+                    $params[static::GENERATED_PARENT_NAMESPACE] = $this->prototype->getNamespace()
+                        . '\\'
+                        . $this->prototype->getClass();
                     if ($this->initPrototype($params)) {
                         if ($this->generator->generate()) {
-                            $this->generator->placeFile(
+                            $this->generator->placeFileIfNotExists(
                                 $this->generator->getFullFilePath(),
                                 $this->generator->getStubString()
                             );
