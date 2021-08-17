@@ -3,15 +3,16 @@
 namespace Bitrock\Models\Infoblock;
 use Birtock\Models\Highload\HLModel;
 use Bitrock\Models\Model;
-use Bitrock\Models\BitrixModelTrait;
 use \Bitrix\Main\Loader;
 use Bitrock\Utils\Logger\Logger;
 use Letsrock\TextErrorTrait;
+use Bitrock\Models\BitrixModelTrait;
+use Letsrock\CreatableModel\CreatableModel;
 use \CIBlockElement;
 
 Loader::includeModule('iblock');
 
-class InfoblockModel extends Model
+class InfoblockModel extends Model implements CreatableModel
 {
     use BitrixModelTrait, TextErrorTrait;
 
@@ -95,6 +96,11 @@ class InfoblockModel extends Model
 
         $this->addError($element->LAST_ERROR);
         return false;
+    }
+
+    public function createByFactory(array $data)
+    {
+        return $this->add($data);
     }
 
     /** Метод для получения значений свойства

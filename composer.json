@@ -16,6 +16,7 @@
     "letsrock/view": "1.*",
     "letsrock/router": "1.*",
     "letsrock/hlmodel": "1.*",
+    "letsrock/creatable-model": "1.*",
     "letsrock/error-trait": "1.*",
     "php-di/php-di": "^6.3",
     "tightenco/collect": "^8.19",
