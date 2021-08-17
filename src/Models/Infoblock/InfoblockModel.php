@@ -6,13 +6,14 @@ use Bitrock\Models\Model;
 use Bitrock\Models\BitrixModelTrait;
 use \Bitrix\Main\Loader;
 use Bitrock\Utils\Logger\Logger;
+use Letsrock\TextErrorTrait;
 use \CIBlockElement;
 
 Loader::includeModule('iblock');
 
 class InfoblockModel extends Model
 {
-    use BitrixModelTrait;
+    use BitrixModelTrait, TextErrorTrait;
 
     public CONST VALUE = 'VALUE';
     public CONST NAME = 'NAME';
@@ -78,6 +79,22 @@ class InfoblockModel extends Model
         }
 
         return $res;
+    }
+
+    public function add(array $data)
+    {
+        if (empty($data)) return false;
+
+        $data['IBLOCK_ID'] = $this->getInfoblockId();
+
+        $element = new \CIBlockElement;
+
+        if ($elementId = $element->Add($data)) {
+            return $elementId;
+        }
+
+        $this->addError($element->LAST_ERROR);
+        return false;
     }
 
     /** Метод для получения значений свойства
