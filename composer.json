@@ -15,6 +15,7 @@
     "letsrock/logger": "1.*",
     "letsrock/view": "1.*",
     "letsrock/router": "1.*",
+    "fakerphp/faker": "1.*",
     "letsrock/hlmodel": "1.*",
     "letsrock/creatable-model": "1.*",
     "letsrock/error-trait": "1.*",
