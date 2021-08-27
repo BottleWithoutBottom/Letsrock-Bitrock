@@ -8,19 +8,6 @@ use Bitrock\LetsCore;
 
 class BitrixModelGenerator extends ClassGenerator
 {
-    public function __construct(
-        ClassPrototype $prototype,
-        ClassStub $stub
-    ) {
-        parent::__construct($prototype, $stub);
-        $this->path = LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_MODELS_PATH);
-    }
-
-    public function generate(): bool
-    {
-        return parent::generate();
-    }
-
     public function generateClear(): bool
     {
         if ($class = $this->getPrototype()->getClass()) {
@@ -38,5 +25,4 @@ class BitrixModelGenerator extends ClassGenerator
 
         return false;
     }
-
 }

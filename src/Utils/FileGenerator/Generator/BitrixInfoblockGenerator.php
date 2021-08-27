@@ -30,6 +30,7 @@ class BitrixInfoblockGenerator extends BitrixModelGenerator
         ClassStub $stub
     ) {
         parent::__construct($prototype, $stub);
+        $this->path = LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_MODELS_PATH);
 
         $this->generatedPath = $this->path
             . LetsCore::getEnv(LetsCore::GENERATE_INFOBLOCK_GENERATED_MODELS_DIR_NAME) . DIRECTORY_SEPARATOR;
