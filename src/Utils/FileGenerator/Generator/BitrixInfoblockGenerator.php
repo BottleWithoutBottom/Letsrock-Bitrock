@@ -10,9 +10,6 @@ use Bitrock\LetsCore;
 
 class BitrixInfoblockGenerator extends BitrixModelGenerator
 {
-    protected $generatedMode = false;
-    protected $generatedPath;
-
     protected $symbolCodeStubs = [
         '{{symbolCode}}', '{{ symbolCode }}'
     ];
@@ -168,25 +165,4 @@ class BitrixInfoblockGenerator extends BitrixModelGenerator
         return true;
     }
 
-    public function getGeneratedFullFilePath()
-    {
-        if (empty($this->getFileName()) || empty($this->getGeneratedPath())) return false;
-
-        return $this->getGeneratedPath() . $this->getFileName() . $this->ext;
-    }
-
-    public function getGeneratedPath()
-    {
-        return $this->generatedPath;
-    }
-
-    public function setGeneratedMode($mode)
-    {
-        $this->generatedMode = $mode;
-    }
-
-    public function getGeneratedMode()
-    {
-        return $this->generatedMode;
-    }
 }
