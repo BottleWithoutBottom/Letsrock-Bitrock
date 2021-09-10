@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class Controller
 {
+    public CONST EMPTY_DATA_MESSAGE = 'Массив с данными пуст';
     protected $request;
     public function __construct()
     {
@@ -47,5 +48,24 @@ abstract class Controller
         $jsonResponse->setMessage($message);
         $jsonResponse->setStatus($status);
         $jsonResponse->send();
+    }
+
+    protected function checkEmptyData(array $data = [], string $emptyMessage = ''): bool
+    {
+        $dataIsEmpty = true;
+        foreach ($data as $field) {
+            if (!empty($field)) {
+                $dataIsEmpty = false;
+            }
+        }
+
+        if (!$dataIsEmpty) {
+            return false;
+        } else {
+            if (empty($emptyMessage)) $emptyMessage = static::EMPTY_DATA_MESSAGE;
+
+            $this->getResponse()->setData(['text' => $emptyMessage]);
+            return true;
+        }
     }
 }
