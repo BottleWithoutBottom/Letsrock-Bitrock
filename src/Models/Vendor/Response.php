@@ -16,7 +16,7 @@ abstract class Response
 
     public function sendHTTPstatus()
     {
-        if (empty($this->httpStatus)) $this->httpStatus = static::NOT_FOUND_RESPONSE_CODE;
+        if (empty($this->httpStatus)) $this->httpStatus = static::SUCCESS_RESPONSE_CODE;
 
         http_response_code($this->httpStatus);
     }
